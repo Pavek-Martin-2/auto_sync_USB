@@ -4,8 +4,8 @@ $pole_usb_sn = @(
 
 # 16 Gb flesky
 "0B7124105040",  # 16 Gb bila vysouvaci fleska adata - knihovna [0]
-"AA00000000000489", # 16 Gb cerna Adata [1]  2X STEJNE !
-"xxxxxxxxxxxxxxx", # 16 Gb modra fleska [2] 2X STEJNE !
+"AA00000000000489", # 16 Gb cerna Adata [1]
+"125698884441111", # 16 Gb modra fleska [2]
 
 # 32 Gb flesky
 "4C530001261101120300", # 32 Gb flaska Dokumenty cerna ( bez dratku ) [3]
