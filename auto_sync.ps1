@@ -60,7 +60,7 @@ $pole_usb_sn = @(
 # 16 Gb flesky
 "0B7124105040",  # 16 Gb bila vysouvaci fleska Adata - knihovna [0]
 "AA00000000000489", # 16 Gb cerna Adata [1]
-"AA00000000000489", # 16 Gb mala modra fleska [2]
+"125698884441111", # 16 Gb mala modra fleska [2]
 
 # 32 Gb flesky, obsahuje exclude radek "C:\Users\DELL\Documents\zaloha\vypalit_na_BD"
 "4C530001261101120300", # 32 Gb flaska Dokumenty cerna ( bez dratku ) [3]
