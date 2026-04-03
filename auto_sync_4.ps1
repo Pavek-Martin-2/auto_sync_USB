@@ -1,6 +1,6 @@
 ﻿cls
 <#
-program pro automotickou synchronizaci souboru a slozek v pocitaci (z disku C: ) na ruzne USB jednotky
+program pro automatickou synchronizaci souboru a slozek v pocitaci (z disku C: ) na ruzne USB jednotky
 jednotky maji ruzne velikosti napr. 16Gb, 32Gb, 64 a vice mam take v boxu stary SSD disk ktery na 128 Gb
 synchronizace zjistuje utilita "robocopy.exe" ktera je beznou soucasti instalace Windows ( mam Win 10 pro )
 v poly "$pole_usb_sn" jsou ulozena zjistena seriova cisla vsech USB jednonotek co mam, mam jich nekolik jak je vydet
@@ -32,21 +32,12 @@ Set-PSDebug -Strict # jakakoliv nedeklarovana promenna pri jejim zavolani udela 
 
 $ExistingVariables = Get-Variable | Select-Object -ExpandProperty Name # nazev souboru skriptu do zahlavi okna
 [string] $scriptName = pwd
+if ( $scriptName.Length -ne 3 ) { $scriptName += "\"}
 $scriptName += $MyInvocation.MyCommand.Name
 $host.UI.RawUI.WindowTitle = $scriptName
 
-<#
-# test existence robocopy.exe
-$trb = "C:\Windows\System32\Robocopy.exe"
-# test-commnand ?
-if (-not (Test-Path $trb )){
-Write-Warning "nenalezena utilita $trb"
-sleep 5
-exit 1
-}
-#>
 
-# test na prikaz "robocopy"
+# test na prikaz "robocopy" je v adresari C:windows\system32 ( tedy v $PATH )
 $c1 ="robocopy"
 #$c1 = "robocopyXXX" # testovaci radek
 if (-not (Get-Command $c1 -ErrorAction SilentlyContinue )) {
@@ -60,22 +51,22 @@ $pole_usb_sn = @(
 # 16 Gb flesky
 "0B7124105040",  # 16 Gb bila vysouvaci fleska Adata - knihovna [0]
 "AA00000000000489", # 16 Gb cerna Adata [1]
-"125698884441111", # 16 Gb mala modra fleska [2]
 
 # 32 Gb flesky, obsahuje exclude radek "C:\Users\DELL\Documents\zaloha\vypalit_na_BD"
-"4C530001261101120300", # 32 Gb flaska Dokumenty cerna ( bez dratku ) [3]
-"121220160204", # 32 Gb SD karta v redukci (dokumenty) [4] POZOR TOTO JE SN USB REDUKCE NIKOLIV KARTY V REDUKCI !!
+"4C530001261101120300", # 32 Gb flaska Dokumenty cerna ( bez dratku ) [2]
+"121220160204", # 32 Gb SD karta v redukci (dokumenty) [3] POZOR TOTO JE SN USB REDUKCE NIKOLIV KARTY V REDUKCI !!
 
 # 64 Gb 
-"01915518", # 64 Gb SD karta, uvnitr noteboooku [5]
+"01915518", # 64 Gb SD karta, uvnitr noteboooku [4]
 
 # ostatni vice nez 64 Gb
-"4C530001131108110192", # fleska 256 GB sync all [6]
-"0101523124291ec35e73", # fleska 256 Gb televize setup box [7] POZOR ZDE TROCHU JINAK !
-"801130168383",  # box 3 - ssd disk v cernym boxu [8] sync all
-"3000CCCCBBBBAAAA" # 1,5 Tb velkej box [9] sync all
+"4C530001131108110192", # fleska 256 GB sync all [5]
+"0101523124291ec35e73", # fleska 256 Gb televize setup box [6] POZOR ZDE TROCHU JINAK !
+"801130168383",  # box 3 - ssd disk v cernym boxu [7] sync all
+"3000CCCCBBBBAAAA", # 1,5 Tb velkej box [8] sync all
 
-# "E20312161846" 320 Gb bilej box Hdd, zatim vynechano, slozi pro historii souboru sluzba windows 10
+"0000e5cf7a5a", # GPS-ka Garmnin [9]
+"E20312161846" #  320 Gb bilej box Hdd, zatim vynechano, slozi pro historii souboru sluzba windows 10
 )
 
 
@@ -123,11 +114,10 @@ $jednotka_sn = $results[$aa].HardwareSN
 $jednotka_size = $results[$aa].SizeGb
 
 # pro 16 GB ( zlute )
-if ((
+if (
 ( $jednotka_sn -like $pole_usb_sn[0] ) -or 
-( $jednotka_sn -like $pole_usb_sn[1] ) -or 
-( $jednotka_sn -like $pole_usb_sn[2] )
-)) {
+( $jednotka_sn -like $pole_usb_sn[1] )
+) {
 
 $s = [Math]::Ceiling( $jednotka_size / 1000000000 )
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
@@ -161,8 +151,8 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 
 # pro 32 Gb ( blede modre )
 if (
-( $jednotka_sn -like $pole_usb_sn[3] ) -or 
-( $jednotka_sn -like $pole_usb_sn[4] )
+( $jednotka_sn -like $pole_usb_sn[2] ) -or 
+( $jednotka_sn -like $pole_usb_sn[3] )
 ) {
 $s = [Math]::Ceiling( $jednotka_size / 1000000000 )
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
@@ -187,7 +177,7 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 
 
 # pro 64 Gb ( modre )
-if ( $jednotka_sn -like $pole_usb_sn[5] ) {
+if ( $jednotka_sn -like $pole_usb_sn[4] ) {
 $s = [Math]::Ceiling( $jednotka_size / 1000000000 )
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
@@ -211,9 +201,9 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 
 # ostatni vice nez 64 Gb ( cervene ) 
 if ((
-( $jednotka_sn -like $pole_usb_sn[6] ) -or
-( $jednotka_sn -like $pole_usb_sn[8] ) -or
-( $jednotka_sn -like $pole_usb_sn[9] ) # novinka rozdeleni vice podminek na vice radku :) ( prehlednejsi reseni )
+( $jednotka_sn -like $pole_usb_sn[5] ) -or
+( $jednotka_sn -like $pole_usb_sn[7] ) -or
+( $jednotka_sn -like $pole_usb_sn[8] ) # novinka rozdeleni vice podminek na vice radku :) ( prehlednejsi reseni )
 )) {
 
 $s = [Math]::Ceiling( $jednotka_size / 1000000000 )
@@ -238,9 +228,8 @@ $datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
 Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
 }
 
-
 # pouze pro fleska televize ( dela se trochu jinak !, fialove)
-if ( $jednotka_sn -like $pole_usb_sn[7] ) {
+if ( $jednotka_sn -like $pole_usb_sn[6] ) {
 $s = [Math]::Ceiling( $jednotka_size / 1000000000 )
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
@@ -253,6 +242,18 @@ robocopy "C:\Users\DELL\Music" "$jednotka_pismeno\RoboCopy\Music" *.* /MIR
 $datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
 #echo $datum
 Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
+}
+
+# GPS -Garmin
+if ( $jednotka_sn -like $pole_usb_sn[9] ) {
+$s = [Math]::Ceiling( $jednotka_size / 1000000000 )
+Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
+sleep $cekej
+robocopy "$jednotka_pismeno\" "C:\Users\DELL\Documents\zaloha\GPS-ka\" *.* /MIR
+
+$datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
+#echo $datum
+Set-Content -Path "C:\Users\DELL\Documents\zaloha\GPS-ka\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
 }
 
 echo ""
