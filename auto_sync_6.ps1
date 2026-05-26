@@ -164,8 +164,6 @@ if (
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
 
-Copy-Item C:\Users\DELL\Documents\dvd $jednotka_pismeno\RoboCopy\dvd # -Confirm -force
-Copy-Item C:\Users\DELL\Documents\dvd $jednotka_pismeno\dvd
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 robocopy "C:\Users\DELL\Documents\QL_SAVE" "$jednotka_pismeno\RoboCopy\QL_SAVE" *.* /MIR
@@ -198,8 +196,6 @@ if ( $jednotka_sn -like $pole_usb_sn[2] ) {
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn" # zde zobrazuje $s
 sleep $cekej
 
-Copy-Item "C:\Users\DELL\Documents\dvd" "$jednotka_pismeno\RoboCopy\dvd" -force # -Confirm -force
-#Copy-Item "C:\Users\DELL\Documents\dvd" "$jednotka_pismeno\dvd" -Force
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\login" *.* /MIR
@@ -207,6 +203,9 @@ robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\nav
 
 # robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR
 robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR /XD "C:\Users\DELL\Documents\zaloha\vypalit_na_BD"
+
+# pridano 14.5.2026 - C:\Users\DELL\Videos\_RUZNE\F
+robocopy "C:\Users\DELL\Videos\_RUZNE\F" "$jednotka_pismeno\F" *.* /MIR
 
 # /XD exclude directory "C:\Users\DELL\Documents\Visual Studio 2022" FYNGUJE, VYZKOUSENO
 # REM v adresari "Documents" vynecha slozku "Visual Studio 2022"
@@ -222,9 +221,6 @@ if ( $jednotka_sn -like $pole_usb_sn[4] ) {
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
 
-
-Copy-Item "C:\Users\DELL\Documents\dvd" "$jednotka_pismeno\RoboCopy\dvd" -force # -Confirm -force
-Copy-Item "C:\Users\DELL\Documents\dvd" "$jednotka_pismeno\dvd" -Force
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
@@ -253,8 +249,6 @@ if ((
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
 
-Copy-Item "C:\Users\DELL\Documents\dvd" "$jednotka_pismeno\RoboCopy\dvd" -force # -Confirm -force
-Copy-Item "C:\Users\DELL\Documents\dvd" "$jednotka_pismeno\dvd" -Force
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
@@ -281,9 +275,9 @@ sleep $cekej
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
-# pridano nove 12.5.2026 - C:\Users\DELL\Videos\_RUZNE\F - vynecha adresar cssr
+# pridano nove 12.5.2026 - C:\Users\DELL\Videos\_RUZNE\F - vynecha adresar "cssr" a "oblibene"
 # z televizni flesky adresar "F" do pocotace synchronizuje (obracene)
-robocopy "$jednotka_pismeno\F" "C:\Users\DELL\Videos\_RUZNE\F" *.* /MIR /XD "$jednotka_pismeno\F\cssr"
+robocopy "$jednotka_pismeno\F" "C:\Users\DELL\Videos\_RUZNE\F" *.* /MIR /XD "$jednotka_pismeno\F\cssr" /XD "$jednotka_pismeno\F\oblibene"
 
 robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR
 robocopy "C:\Users\DELL\Pictures" "$jednotka_pismeno\RoboCopy\Pictures" *.* /MIR
@@ -318,9 +312,6 @@ Write-Host -ForegroundColor Blue "$jednotka_pismeno $s GB, $jednotka_model, SN -
 #echo "yyyyyyyyyyyyyyyyy"
 sleep $cekej
 
-Copy-Item "C:\Users\DELL\Documents\dvd" "$jednotka_pismeno\RoboCopy\dvd" -force # -Confirm -force
-Copy-Item "C:\Users\DELL\Documents\dvd" "$jednotka_pismeno\dvd" -Force
-
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
 robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
@@ -349,7 +340,6 @@ Write-Host -ForegroundColor Blue "$jednotka_pismeno $s GB, $jednotka_model, SN -
 sleep $cekej
 
 #robocopy "$jednotka_pismeno\" "C:\Users\DELL\Documents\zaloha\GPS-ka\" *.* /MIR
-Copy-Item "C:\Users\DELL\Documents\dvd" "$jednotka_pismeno\dvd" -Force
 Copy-Item "C:\Users\DELL\Documents\zaloha\bookmarks.html" "$jednotka_pismeno\bookmarks.html" -Force
 Copy-Item "C:\Users\DELL\Documents\zaloha\bookmarks.json" "$jednotka_pismeno\bookmarks.json" -Force
 Copy-Item "C:\Users\DELL\Documents\zaloha\firefox_hesla.csv" "$jednotka_pismeno\firefox_hesla.csv" -Force
