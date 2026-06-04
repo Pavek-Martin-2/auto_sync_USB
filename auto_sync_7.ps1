@@ -84,20 +84,22 @@ $pole_usb_sn = @(
 
 # 32 Gb flesky, obsahuje exclude radek "C:\Users\DELL\Documents\zaloha\vypalit_na_BD"
 "4C530001261101120300", # 32 Gb flaska Dokumenty cerna ( bez dratku ) [2]
-"121220160204", # 32 Gb SD karta v redukci (dokumenty) [3] POZOR TOTO JE SN USB REDUKCE NIKOLIV KARTY V REDUKCI !!
+"121220160204", # 32 Gb SD karta v redukci (dokumenty) POZOR TOTO JE SN USB REDUKCE NIKOLIV KARTY V REDUKCI !! [3]
 
 # 64 Gb 
 "01915518", # 64 Gb SD karta, uvnitr noteboooku [4]
 
 # ostatni vice nez 64 Gb
 "4C530001131108110192", # fleska 256 GB sync all [5]
-"0101523124291ec35e73", # fleska 256 Gb televize setup box [6] POZOR ZDE TROCHU JINAK !
-"801130168383",  # box 3 - ssd disk v cernym boxu [7] sync all
-"3000CCCCBBBBAAAA", # 1,5 Tb velkej box [8] sync all
+"0101523124291ec35e73", # fleska 256 Gb televize setup box POZOR ZDE TROCHU JINAK ! [6]
+"801130168383",   # upraveno 4.6.2026 pridan hdd 32 Gb na zalohovani pres Robocopy all, puvodne byl na file history [7]
+"3000CCCCBBBBAAAA", # 1,5 Tb velkej box sync all [8]
 
 "0000e5cf7a5a", # GPS-ka Garmnin [9]
-"E20312161846", #  320 Gb bilej box Hdd, zatim vynechano, slozi pro historii souboru sluzba windows 10
-"9C053654B907" # pridano 31.4.2026, sdd disk v bilim supliku, puvodne z Xboxu 360 (pouzit ho stejne jako cernej suplik) [11]
+"E20312161846", #  320 Gb bilej box Hdd, zatim vynechano, slozi pro historii souboru sluzba windows [10]
+"9C053654B907", # pridano 31.4.2026, sdd disk v bilim supliku, puvodne z Xboxu 360 (pouzit ho stejne jako cernej suplik) [11]
+#"WXF2E21E6V2F" # nefungoovalo pro box 4 Tb
+"WXF2E21E6V2F    " # takto funguje pridano 3.6.2026 extterni Hdd Western Digital - 4 Tb [12]
 )
 
 
@@ -191,8 +193,7 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 
 # pro 32 Gb ( blede modre ) ale flesku 32 gb ( ta bez dratku )
 if ( $jednotka_sn -like $pole_usb_sn[2] ) {
-#echo "qqqqqqqqqqqqqqqqqqqqqq"
-#sleep $cekej
+#echo "qqqqqqqqqqq" ; sleep $cekej
 
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn" # zde zobrazuje $s
 sleep $cekej
@@ -226,7 +227,6 @@ if ( $jednotka_sn -like $pole_usb_sn[4] ) {
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
 
-
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
 robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
@@ -243,25 +243,25 @@ $datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
 Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
 }
 
-
 # ostatni vice nez 64 Gb ( cervene )
  # novinka rozdeleni vice podminek na vice radku :) ( prehlednejsi reseni )
 if (((
 ( $jednotka_sn -like $pole_usb_sn[5] ) -or
-( $jednotka_sn -like $pole_usb_sn[7] ) -or
+( $jednotka_sn -like $pole_usb_sn[7] ) -or # nove box 320 Gb, puvodne byl na File History
 ( $jednotka_sn -like $pole_usb_sn[8] ) -or
 ( $jednotka_sn -like $pole_usb_sn[11] )
 ))) {
 
+# echo "ssss"; sleep $cekej
+
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
 
-
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
-robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
-robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\login" *.* /MIR
-robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\navody" *.* /MIR
+robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
+robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\login" *.* /MIR
+robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
 
 robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR
 
@@ -316,8 +316,7 @@ if (
 ( $jednotka_size -eq 31914086400  ) # type Uint64, upraveno 3.4.2026
 ) {
 Write-Host -ForegroundColor Blue "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
-#echo "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
-#sleep $cekej
+#echo "yyyyyyyyyy" ; sleep $cekej
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
@@ -350,8 +349,7 @@ if (
 ( $jednotka_size -eq 4022161920 ) # Uint64, 4GB Sd karta v redukci
 ) {
 Write-Host -ForegroundColor Blue "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
-#echo "zzzzzzzzzzzzzzzz"
-#sleep $cekej
+#echo "zzzzzzzzz" ; #sleep $cekej
 
 #robocopy "$jednotka_pismeno\" "C:\Users\DELL\Documents\zaloha\GPS-ka\" *.* /MIR
 Copy-Item "C:\Users\DELL\Documents\zaloha\bookmarks.html" "$jednotka_pismeno\bookmarks.html" -Force
@@ -374,6 +372,33 @@ $datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
 #echo $datum
 Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
 }
+
+# pridano 3.6.2026 externi Hdd Western Digital - 4 Tb [12] vsechno
+# "WXF2E21E6V2F    " takto je to dobre ? ( zkotrolavat pres $neco.lenght )
+if ( $jednotka_sn -like $pole_usb_sn[12] ) {
+#echo "aaaaaazzzzzz" ; #sleep $cekej
+
+Write-Host -ForegroundColor DarkCyan "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
+sleep $cekej
+
+robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
+
+robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
+robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\login" *.* /MIR
+robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\navody" *.* /MIR
+
+robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR
+
+robocopy "C:\Users\DELL\Pictures" "$jednotka_pismeno\RoboCopy\Pictures" *.* /MIR
+robocopy "C:\Users\DELL\Videos" "$jednotka_pismeno\RoboCopy\Videos" *.* /MIR
+robocopy "C:\Users\DELL\Music" "$jednotka_pismeno\RoboCopy\Music" *.* /MIR
+
+# date /t > E:\RoboCopy\last_sync_time-date_info.txt & time/t >> E:\Robocopy\last_sync_time-date_info.txt
+$datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
+#echo $datum
+Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
+}
+
 
 # konec prikazu for $aa
 echo ""
