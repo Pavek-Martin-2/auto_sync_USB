@@ -82,7 +82,7 @@ $pole_usb_sn = @(
 "0B7124105040",  # 16 Gb bila vysouvaci fleska Adata - knihovna [0]
 "AA00000000000489", # 16 Gb cerna Adata [1]
 
-# 32 Gb flesky, obsahuje exclude radek "C:\Users\DELL\Documents\zaloha\vypalit_na_BD"
+# 32 Gb flesky
 "4C530001261101120300", # 32 Gb flaska Dokumenty cerna ( bez dratku ) [2]
 "121220160204", # 32 Gb SD karta v redukci (dokumenty) POZOR TOTO JE SN USB REDUKCE NIKOLIV KARTY V REDUKCI !! [3]
 
@@ -97,9 +97,10 @@ $pole_usb_sn = @(
 
 "0000e5cf7a5a", # GPS-ka Garmnin [9]
 "E20312161846", #  320 Gb bilej box Hdd, zatim vynechano, slozi pro historii souboru sluzba windows [10]
-"9C053654B907", # pridano 31.4.2026, sdd disk v bilim supliku, puvodne z Xboxu 360 (pouzit ho stejne jako cernej suplik) [11]
+"9C053654B907", # pridano 31.4.2026, sdd disk v bilim plastovim supliku [11]
 #"WXF2E21E6V2F" # nefungoovalo pro box 4 Tb
-"WXF2E21E6V2F    " # takto funguje pridano 3.6.2026 extterni Hdd Western Digital - 4 Tb [12]
+"WXF2E21E6V2F    ", # takto funguje pridano 3.6.2026 extterni Hdd Western Digital - 4 Tb [12]
+"089101900057" # box cernej plastovej s ssd 128 gb [13]
 )
 
 
@@ -163,6 +164,8 @@ if (
 ( $jednotka_sn -like $pole_usb_sn[1] )
 ) {
 
+#echo "xxxxxxx" ; sleep $cekej
+
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
 
@@ -192,7 +195,7 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 
 
 # pro 32 Gb ( blede modre ) ale flesku 32 gb ( ta bez dratku )
-if ( $jednotka_sn -like $pole_usb_sn[2] ) {
+if ( $jednotka_sn -like $pole_usb_sn[2] ) {  # 32 Gb flaska Dokumenty cerna ( bez dratku ) [2]
 #echo "qqqqqqqqqqq" ; sleep $cekej
 
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn" # zde zobrazuje $s
@@ -204,7 +207,7 @@ robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\logi
 robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
 
 # robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR
-robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR /XD "C:\Users\DELL\Documents\zaloha\vypalit_na_BD"
+robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR
 
 # pridano 14.5.2026 - C:\Users\DELL\Videos\_RUZNE\F
 # robocopy "C:\Users\DELL\Videos\_RUZNE\F" "$jednotka_pismeno\F" *.* /MIR
@@ -245,14 +248,15 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 
 # ostatni vice nez 64 Gb ( cervene )
  # novinka rozdeleni vice podminek na vice radku :) ( prehlednejsi reseni )
-if (((
-( $jednotka_sn -like $pole_usb_sn[5] ) -or
+if ((((
+( $jednotka_sn -like $pole_usb_sn[5] ) -or # fleska 256 gb k pocitaci, z dlouhym dratkem
 ( $jednotka_sn -like $pole_usb_sn[7] ) -or # nove box 320 Gb, puvodne byl na File History
-( $jednotka_sn -like $pole_usb_sn[8] ) -or
-( $jednotka_sn -like $pole_usb_sn[11] )
-))) {
+( $jednotka_sn -like $pole_usb_sn[8] ) -or # velkej box 1,5 Tb 3,5 palce
+( $jednotka_sn -like $pole_usb_sn[11] ) -or # box sdd disk v bilim plastovim supliku [11]
+( $jednotka_sn -like $pole_usb_sn[13] ) # box cernej platovej, 128 Gb ssd
+)))) {
 
-# echo "ssss"; sleep $cekej
+#echo "ssss"; sleep $cekej
 
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
@@ -276,7 +280,10 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 }
 
 # pouze pro fleska televize ( dela se trochu jinak !, fialove)
-if ( $jednotka_sn -like $pole_usb_sn[6] ) {
+if ( $jednotka_sn -like $pole_usb_sn[6] ) { # fleska 256 Gb u televize, kratkrej dratek
+
+#echo "tvttvtvttv" ; sleep $cekej
+
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
 
@@ -316,9 +323,10 @@ if (
 ( $jednotka_size -eq 31914086400  ) # type Uint64, upraveno 3.4.2026
 ) {
 Write-Host -ForegroundColor Blue "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
-#echo "yyyyyyyyyy" ; sleep $cekej
+#echo "323232" ; sleep $cekej
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
+sleep $cekej
 
 robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\login" *.* /MIR
@@ -349,7 +357,7 @@ if (
 ( $jednotka_size -eq 4022161920 ) # Uint64, 4GB Sd karta v redukci
 ) {
 Write-Host -ForegroundColor Blue "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
-#echo "zzzzzzzzz" ; #sleep $cekej
+#echo "4gb4gb4gb" ; sleep $cekej
 
 #robocopy "$jednotka_pismeno\" "C:\Users\DELL\Documents\zaloha\GPS-ka\" *.* /MIR
 Copy-Item "C:\Users\DELL\Documents\zaloha\bookmarks.html" "$jednotka_pismeno\bookmarks.html" -Force
