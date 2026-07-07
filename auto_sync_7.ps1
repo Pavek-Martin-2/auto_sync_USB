@@ -97,10 +97,10 @@ $pole_usb_sn = @(
 
 "0000e5cf7a5a", # GPS-ka Garmnin [9]
 "E20312161846", #  320 Gb bilej box Hdd, zatim vynechano, slozi pro historii souboru sluzba windows [10]
-"9C053654B907", # pridano 31.4.2026, sdd disk v bilim plastovim supliku [11]
+"---9C053654B907", # 22.6.2026 ssd plastove box bilej 128 Gb, zmeneno bude na Aomei [11]
 #"WXF2E21E6V2F" # nefungoovalo pro box 4 Tb
 "WXF2E21E6V2F    ", # takto funguje pridano 3.6.2026 extterni Hdd Western Digital - 4 Tb [12]
-"089101900057" # box cernej plastovej s ssd 128 gb [13]
+"----089101900057" # 23.6.2026 ssd plastovej box cernej 128 Gb, zmneno na Aomei_2 [13]
 )
 
 
@@ -188,6 +188,8 @@ robocopy "C:\Users\DELL\Documents\zaloha\segway_kolobezka_moje" "$jednotka_pisme
 robocopy "C:\Users\DELL\Documents\zaloha\ruzne" "$jednotka_pismeno\RoboCopy\ruzne" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\moje_prace" "$jednotka_pismeno\RoboCopy\moje_prace" *.* /MIR
 
+#robocopy "C:\Users\DELL\Videos\_RUZNE\F" "$jednotka_pismeno\F" *.* /MIR # pridano 25.6.2026
+
 $datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
 #echo $datum
 Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
@@ -231,15 +233,15 @@ Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN
 sleep $cekej
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
-
 robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\login" *.* /MIR
+robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
 
 robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR
 robocopy "C:\Users\DELL\Pictures" "$jednotka_pismeno\RoboCopy\Pictures" *.* /MIR
 robocopy "C:\Users\DELL\Videos" "$jednotka_pismeno\RoboCopy\Videos" *.* /MIR
-
-robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
+robocopy "C:\Users\DELL\Music" "$jednotka_pismeno\RoboCopy\Music" *.* /MIR
+# pridano 4.7.2026 - Music
 
 $datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
 #echo $datum
@@ -280,7 +282,7 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 }
 
 # pouze pro fleska televize ( dela se trochu jinak !, fialove)
-if ( $jednotka_sn -like $pole_usb_sn[6] ) { # fleska 256 Gb u televize, kratkrej dratek
+if ( $jednotka_sn -like $pole_usb_sn[6] ) { # fleska 256 Gb u televize, kratkej dratek
 
 #echo "tvttvtvttv" ; sleep $cekej
 
@@ -290,7 +292,8 @@ sleep $cekej
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
 # pridano nove 12.5.2026 - C:\Users\DELL\Videos\_RUZNE\F - vynecha adresar "cssr" a "oblibene"
-# z televizni flesky adresar "F" do pocotace synchronizuje (obracene)
+
+# z televizni flesky adresar "F" do pocotace synchronizuje (obracene) <<<<
 robocopy "$jednotka_pismeno\F" "C:\Users\DELL\Videos\_RUZNE\F" *.* /MIR /XD "$jednotka_pismeno\F\cssr" /XD "$jednotka_pismeno\F\oblibene"
 
 robocopy "C:\Users\DELL\Documents" "$jednotka_pismeno\RoboCopy\Documents" *.* /MIR
@@ -305,7 +308,7 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 }
 
 # pridano 2.4.2026
-# GPS-ka, Garminm vnitni pamet cca. 2GB
+# GPS-ka, Garmin vnitni pamet cca. 2GB
 if ( $jednotka_sn -like $pole_usb_sn[9] ) {
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
