@@ -93,14 +93,14 @@ $pole_usb_sn = @(
 "4C530001131108110192", # fleska 256 GB sync all [5]
 "0101523124291ec35e73", # fleska 256 Gb televize setup box POZOR ZDE TROCHU JINAK ! [6]
 "801130168383",   # upraveno 4.6.2026 pridan hdd 32 Gb na zalohovani pres Robocopy all, puvodne byl na file history [7]
-"3000CCCCBBBBAAAA", # 1,5 Tb velkej box sync all [8]
+"3000CCCCBBBBAAAA", # 1,5 Tb velkej box sync all [8] opet, oba disky 1,5 Tb maji stejne SN (dela ho tedy box)
 
 "0000e5cf7a5a", # GPS-ka Garmnin [9]
 "E20312161846", #  320 Gb bilej box Hdd, zatim vynechano, slozi pro historii souboru sluzba windows [10]
 "---9C053654B907", # 22.6.2026 ssd plastove box bilej 128 Gb, zmeneno bude na Aomei [11]
-#"WXF2E21E6V2F" # nefungoovalo pro box 4 Tb
+#"WXF2E21E6V2F" # nefungovalo pro box 4 Tb
 "WXF2E21E6V2F    ", # takto funguje pridano 3.6.2026 extterni Hdd Western Digital - 4 Tb [12]
-"----089101900057" # 23.6.2026 ssd plastovej box cernej 128 Gb, zmneno na Aomei_2 [13]
+"----089101900057" # 23.6.2026 ssd plastovej box cernej 128 Gb, zmeneno na Aomei_2 [13]
 )
 
 
@@ -153,7 +153,7 @@ $jednotka_size = $results[$aa].SizeGb
 #Write-Host -ForegroundColor Red $jednotka_size.GetTypeCode() # UInt64 - SD karta 32 Gb
 
 # # upraveno 3.4.2026
-# presunuto sen, bude spolecne pro vsechny a bude se nulovat po kazdem pruchdu for $aa cykem
+# presunuto sen, bude spolecne pro vsechny a bude se nulovat po kazdem pruchodu for $aa cyklem
 $s = 0 # vynulovani prommenne $s z predchoziho pruchodu for cyklem $aa
 # (pri prvnim pruchodu naopak deklarovani, zbytecne ale musi byt)
 $s = [Math]::Ceiling( $jednotka_size / 1000000000 ) # spolecne pro vsechny
@@ -368,7 +368,12 @@ Copy-Item "C:\Users\DELL\Documents\zaloha\bookmarks.json" "$jednotka_pismeno\boo
 Copy-Item "C:\Users\DELL\Documents\zaloha\firefox_hesla.csv" "$jednotka_pismeno\firefox_hesla.csv" -Force
 #Copy-Item "C:\Users\DELL\Documents\zaloha\firefox_hesla.rar" "$jednotka_pismeno\firefox_hesla.rar" -Force # opraveno 23.4.2026
 Copy-Item "C:\Users\DELL\Documents\zaloha\login.rar" "$jednotka_pismeno\login.rar" -Force
-Copy-Item "C:\Users\DELL\Documents\zaloha\registr.rar" "$jednotka_pismeno\registr.rar" -Force
+
+# upraveno 5.9.2026
+Remove-Item "$jednotka_pismeno\*_registr.rar" -Force # vymaze vsechny stary zalohy registru
+Copy-Item "C:\Users\DELL\Documents\zaloha\*_registr.rar" "$jednotka_pismeno\" -Force # a pak nakopiruje novou
+# kdyby se v jeden den zalohovalo 2x (stejne datum prefixu nazvu tak to vymaze ale zase to tam nakopiruje znova...
+# konec, upraveno 5.9.2026 - funguje kopirovani pres nahradni znaky, hvezdicka nahrada za retezec apod.
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
@@ -409,7 +414,6 @@ $datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
 #echo $datum
 Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
 }
-
 
 # konec prikazu for $aa
 echo ""
