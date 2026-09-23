@@ -93,7 +93,7 @@ $pole_usb_sn = @(
 "4C530001131108110192", # fleska 256 GB sync all [5]
 "0101523124291ec35e73", # fleska 256 Gb televize setup box POZOR ZDE TROCHU JINAK ! [6]
 "801130168383",   # upraveno 4.6.2026 pridan hdd 32 Gb na zalohovani pres Robocopy all, puvodne byl na file history [7]
-"3000CCCCBBBBAAAA", # 1,5 Tb velkej box sync all [8] opet, oba disky 1,5 Tb maji stejne SN (dela ho tedy box)
+"----3000CCCCBBBBAAAA", # 1,5 Tb velkej box sync all [8] opet, oba disky 1,5 Tb maji stejne SN (dela ho tedy box)
 
 "0000e5cf7a5a", # GPS-ka Garmnin [9]
 "E20312161846", #  320 Gb bilej box Hdd, zatim vynechano, slozi pro historii souboru sluzba windows [10]
@@ -169,20 +169,27 @@ if (
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
 
+# pridano 8.9.2026
+Remove-Item "$jednotka_pismeno\*_registr.rar" -Force # vymaze vsechny stary zalohy registru
+Copy-Item "C:\Users\DELL\Documents\zaloha\*_registr.rar" "$jednotka_pismeno\" -Force # a pak nakopiruje novou
+# kdyby se v jeden den zalohovalo 2x (stejne datum prefixu nazvu tak to vymaze ale zase to tam nakopiruje znova...
+# konec, pridano 8.9.2026 - funguje kopirovani pres nahradni znaky, hvezdicka nahrada za retezec apod.
+
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
+
 robocopy "C:\Users\DELL\Documents\QL_SAVE" "$jednotka_pismeno\RoboCopy\QL_SAVE" *.* /MIR
 robocopy "C:\Users\DELL\Documents\Lua52_Win32" "$jednotka_pismeno\RoboCopy\Lua52_Win32" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ubuntu" "$jednotka_pismeno\RoboCopy\ubuntu" *.* /MIR
 robocopy "C:\Users\DELL\Documents\Dev-Cpp" "$jednotka_pismeno\RoboCopy\Dev-Cpp" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ps1" "$jednotka_pismeno\RoboCopy\ps1" *.* /MIR
-robocopy "C:\Users\DELL\Documents\zaloha\iso" "$jednotka_pismeno\RoboCopy\iso" *.* /MIR
+# robocopy "C:\Users\DELL\Documents\zaloha\iso" "$jednotka_pismeno\RoboCopy\iso" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\termux_backup" "$jednotka_pismeno\RoboCopy\termux_backup" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\bordel" "$jednotka_pismeno\RoboCopy\bordel" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\login" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\login" *.* /MIR
-robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
-robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
+# robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
+# robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
 
 robocopy "C:\Users\DELL\Documents\zaloha\segway_kolobezka_moje" "$jednotka_pismeno\RoboCopy\segway_kolobezka_moje" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\ruzne" "$jednotka_pismeno\RoboCopy\ruzne" *.* /MIR
@@ -204,7 +211,7 @@ Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN
 sleep $cekej
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
-robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
+# robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\login" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
 
@@ -233,7 +240,8 @@ Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN
 sleep $cekej
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
-robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
+
+# robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\login" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
 
@@ -265,7 +273,7 @@ sleep $cekej
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
-robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
+# robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\login" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
 
@@ -312,6 +320,8 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 if ( $jednotka_sn -like $pole_usb_sn[9] ) {
 Write-Host -ForegroundColor Yellow "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 sleep $cekej
+
+Copy-Item "C:\Users\DELL\Documents\ps1\auto_sync_USB\auto_sync_7.ps1" "$jednotka_pismeno\" -Force # pridano 22.8.2026
 robocopy "$jednotka_pismeno\" "C:\Users\DELL\Documents\zaloha\GPS-ka\" *.* /MIR
 
 $datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
@@ -331,7 +341,7 @@ Write-Host -ForegroundColor Blue "$jednotka_pismeno $s GB, $jednotka_model, SN -
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 sleep $cekej
 
-robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
+# robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\login" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\navody" *.* /MIR
 
@@ -357,10 +367,25 @@ Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Enc
 # SN je cislem redukce samotne, nikoliv SD karty v redukci takze je potreba vyhodnotit jeste velikost karty cca. 4GB
 if (
 ( $jednotka_sn -like $pole_usb_sn[3] ) -and # # pridano 3.4.2026
-( $jednotka_size -eq 4022161920 ) # Uint64, 4GB Sd karta v redukci
+#( $jednotka_size -eq 4022161920 ) # Uint64, 4GB Sd karta v redukci # odebrano 22.9.2026, dale nepouzivano
+( $jednotka_size -eq 7739988480 ) # Uint64, 8GB Sd karta v redukci # 22.9.2026 zmeneno na SD kartu 8Gb (nalez z knihobudky)
 ) {
 Write-Host -ForegroundColor Blue "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
 #echo "4gb4gb4gb" ; sleep $cekej
+
+Remove-Item "$jednotka_pismeno\*_registr.rar" -Force # vymaze vsechny stary zalohy registru
+Copy-Item "C:\Users\DELL\Documents\zaloha\*_registr.rar" "$jednotka_pismeno\" -Force # a pak nakopiruje novou
+
+robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 11.9.2026
+robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR # pridano 11.9.2026
+robocopy "C:\Users\DELL\Documents\zaloha\moje_prace" "$jednotka_pismeno\RoboCopy\moje_prace" *.* /MIR # pridano 22.8.2026
+
+robocopy "C:\Users\DELL\Documents\QL_SAVE" "$jednotka_pismeno\RoboCopy\QL_SAVE" *.* /MIR # 22.8.2026 pridano
+robocopy "C:\Users\DELL\Documents\Lua52_Win32" "$jednotka_pismeno\RoboCopy\Lua52_Win32" *.* /MIR
+robocopy "C:\Users\DELL\Documents\ubuntu" "$jednotka_pismeno\RoboCopy\ubuntu" *.* /MIR
+robocopy "C:\Users\DELL\Documents\Dev-Cpp" "$jednotka_pismeno\RoboCopy\Dev-Cpp" *.* /MIR
+robocopy "C:\Users\DELL\Documents\ps1" "$jednotka_pismeno\RoboCopy\ps1" *.* /MIR
+robocopy "C:\Users\DELL\Documents\zaloha\termux_backup" "$jednotka_pismeno\RoboCopy\termux_backup" *.* /MIR # 22.8.2026 konec
 
 #robocopy "$jednotka_pismeno\" "C:\Users\DELL\Documents\zaloha\GPS-ka\" *.* /MIR
 Copy-Item "C:\Users\DELL\Documents\zaloha\bookmarks.html" "$jednotka_pismeno\bookmarks.html" -Force
@@ -379,7 +404,48 @@ robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2
 
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\login" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\ruzne" "$jednotka_pismeno\RoboCopy\ruzne" *.* /MIR
-robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
+# robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
+robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
+#robocopy "C:\Users\DELL\Documents\zaloha\moje_prace" "$jednotka_pismeno\RoboCopy\moje_prace" *.* /MIR
+# ^^ neveslo se uz 
+
+$datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
+#echo $datum
+Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
+}
+
+if (
+( $jednotka_sn -like $pole_usb_sn[3] ) -and # # pridano 3.4.2026
+( $jednotka_size -eq 4022161920 ) # Uint64, 4GB Sd karta v redukci # odebrano 22.9.2026, dale nepouzivano
+#( $jednotka_size -eq 7739988480 ) # Uint64, 8GB Sd karta v redukci # 22.9.2026 zmeneno na SD kartu 8Gb (nalez z knihobudky)
+) {
+Write-Host -ForegroundColor Blue "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
+#echo "4gb4gb4gb" ; sleep $cekej
+
+Remove-Item "$jednotka_pismeno\*_registr.rar" -Force # vymaze vsechny stary zalohy registru
+Copy-Item "C:\Users\DELL\Documents\zaloha\*_registr.rar" "$jednotka_pismeno\" -Force # a pak nakopiruje novou
+
+robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 11.9.2026
+robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR # pridano 11.9.2026
+
+#robocopy "$jednotka_pismeno\" "C:\Users\DELL\Documents\zaloha\GPS-ka\" *.* /MIR
+Copy-Item "C:\Users\DELL\Documents\zaloha\bookmarks.html" "$jednotka_pismeno\bookmarks.html" -Force
+Copy-Item "C:\Users\DELL\Documents\zaloha\bookmarks.json" "$jednotka_pismeno\bookmarks.json" -Force
+Copy-Item "C:\Users\DELL\Documents\zaloha\firefox_hesla.csv" "$jednotka_pismeno\firefox_hesla.csv" -Force
+#Copy-Item "C:\Users\DELL\Documents\zaloha\firefox_hesla.rar" "$jednotka_pismeno\firefox_hesla.rar" -Force # opraveno 23.4.2026
+Copy-Item "C:\Users\DELL\Documents\zaloha\login.rar" "$jednotka_pismeno\login.rar" -Force
+
+# upraveno 5.9.2026
+Remove-Item "$jednotka_pismeno\*_registr.rar" -Force # vymaze vsechny stary zalohy registru
+Copy-Item "C:\Users\DELL\Documents\zaloha\*_registr.rar" "$jednotka_pismeno\" -Force # a pak nakopiruje novou
+# kdyby se v jeden den zalohovalo 2x (stejne datum prefixu nazvu tak to vymaze ale zase to tam nakopiruje znova...
+# konec, upraveno 5.9.2026 - funguje kopirovani pres nahradni znaky, hvezdicka nahrada za retezec apod.
+
+robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
+
+robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\RoboCopy\login" *.* /MIR
+robocopy "C:\Users\DELL\Documents\zaloha\ruzne" "$jednotka_pismeno\RoboCopy\ruzne" *.* /MIR
+# robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\RoboCopy\navody" *.* /MIR
 #robocopy "C:\Users\DELL\Documents\zaloha\moje_prace" "$jednotka_pismeno\RoboCopy\moje_prace" *.* /MIR
 # ^^ neveslo se uz 
@@ -399,7 +465,7 @@ sleep $cekej
 
 robocopy "C:\tools" "$jednotka_pismeno\RoboCopy\tools" *.* /MIR # pridano 23.4.2026
 
-robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
+# robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\login" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ubuntu\navody" "$jednotka_pismeno\navody" *.* /MIR
 
