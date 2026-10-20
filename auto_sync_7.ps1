@@ -99,10 +99,11 @@ $pole_usb_sn = @(
 "E20312161846", #  320 Gb bilej box Hdd, zatim vynechano, slozi pro historii souboru sluzba windows [10]
 "---9C053654B907", # 22.6.2026 ssd plastove box bilej 128 Gb, zmeneno bude na Aomei [11]
 #"WXF2E21E6V2F" # nefungovalo pro box 4 Tb
-"WXF2E21E6V2F    ", # takto funguje pridano 3.6.2026 extterni Hdd Western Digital - 4 Tb [12]
-"----089101900057" # 23.6.2026 ssd plastovej box cernej 128 Gb, zmeneno na Aomei_2 [13]
+"WXF2E21E6V2F    ", # takto funguje pridano 3.6.2026 externi Hdd Western Digital - 4 Tb [12]
+"----089101900057", # 23.6.2026 ssd plastovej box cernej 128 Gb, zmeneno na Aomei_2 [13]
+"00694" # pridano 20.10.2026 - SD karta 64 Gb uvnitr mobilu ( pozor, obe jedntoky v mobilu maj opet stejny SN ) [14]
 )
-
+###################################################################################################################
 
 Write-Host -ForegroundColor Cyan "program pro automatickou synchronizaci na ruzne USB jednotky"
 $d_pole_usb_sn = $pole_usb_sn.Length
@@ -191,7 +192,7 @@ robocopy "C:\Users\DELL\Documents\zaloha\login" "$jednotka_pismeno\login" *.* /M
 # robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\RoboCopy\dvd_katalog" *.* /MIR
 # robocopy "C:\Users\DELL\Documents\zaloha\dvd_katalog" "$jednotka_pismeno\dvd_katalog" *.* /MIR
 
-robocopy "C:\Users\DELL\Documents\zaloha\segway_kolobezka_moje" "$jednotka_pismeno\RoboCopy\segway_kolobezka_moje" *.* /MIR
+#robocopy "C:\Users\DELL\Documents\zaloha\segway_kolobezka_moje" "$jednotka_pismeno\RoboCopy\segway_kolobezka_moje" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\ruzne" "$jednotka_pismeno\RoboCopy\ruzne" *.* /MIR
 robocopy "C:\Users\DELL\Documents\zaloha\moje_prace" "$jednotka_pismeno\RoboCopy\moje_prace" *.* /MIR
 
@@ -385,7 +386,7 @@ robocopy "C:\Users\DELL\Documents\Lua52_Win32" "$jednotka_pismeno\RoboCopy\Lua52
 robocopy "C:\Users\DELL\Documents\ubuntu" "$jednotka_pismeno\RoboCopy\ubuntu" *.* /MIR
 robocopy "C:\Users\DELL\Documents\Dev-Cpp" "$jednotka_pismeno\RoboCopy\Dev-Cpp" *.* /MIR
 robocopy "C:\Users\DELL\Documents\ps1" "$jednotka_pismeno\RoboCopy\ps1" *.* /MIR
-robocopy "C:\Users\DELL\Documents\zaloha\termux_backup" "$jednotka_pismeno\RoboCopy\termux_backup" *.* /MIR # 22.8.2026 konec
+#robocopy "C:\Users\DELL\Documents\zaloha\termux_backup" "$jednotka_pismeno\RoboCopy\termux_backup" *.* /MIR # 22.8.2026 konec
 
 #robocopy "$jednotka_pismeno\" "C:\Users\DELL\Documents\zaloha\GPS-ka\" *.* /MIR
 Copy-Item "C:\Users\DELL\Documents\zaloha\bookmarks.html" "$jednotka_pismeno\bookmarks.html" -Force
@@ -480,6 +481,37 @@ $datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
 #echo $datum
 Set-Content -Path "$jednotka_pismeno\Robocopy\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
 }
+
+
+# pridano 20.10.2026 - SD rakta 64 Gb uvnirt telefonu
+# opet tak jako u redukce sd-usb maji obe jednotky, jak vnitrni pamet telefonu tak SD karta 64 Gb stejne SN !
+# takze je opet nutne rozsirit podnimnu o "-and" $jednotka_size
+if (
+( $jednotka_sn -like $pole_usb_sn[14] ) -and
+( $jednotka_size -eq 62545029120 ) # velikost interni SD karta, 64 Gb ( po zformatovani FAT32 )
+) {
+
+Write-Host -ForegroundColor Magenta "$jednotka_pismeno $s GB, $jednotka_model, SN - $jednotka_sn"
+echo "telefon vnitrni SD karta 64Gb"
+sleep $cekej
+
+#echo $jednotka_size
+#echo $jednotka_pismeno
+
+robocopy "C:\Users\DELL\Documents\zaloha\ruzne" "$jednotka_pismeno\Others\Dell_Ruzne" *.* /MIR /XD * /XF *.com *.bat
+# zde je o to aby synchronizoval pouze soubory *.rar a *.zip a nic jineho
+# /XD * -> nabude synchronizovat vsechny podadresare uvnirt \zaloha\ruzne ( XD jako Directory )
+# /XF *.com *bat -> nebude synchronizovat do targetu vezchny soubory obou pripon *.com a *.bat ( XF jako Files )
+
+#  toto je prevzato z manualu, prikaz - robocopy /? > robocopy_manual.txt
+# /XF file [file]... :: eXclude Files matching given names/paths/wildcards.
+# /XD dirs [dirs]... :: eXclude Directories matching given names/paths.
+
+$datum = "{0:dd.MM.yyyy HH:mm:ss}" -f (Get-Date)
+Set-Content -Path "$jednotka_pismeno\Others\Dell_Ruzne\last_sync_time-date_info.txt" -Encoding ASCII -Value $datum
+# konec pridano 20.10.2026
+}
+
 
 # konec prikazu for $aa
 echo ""
